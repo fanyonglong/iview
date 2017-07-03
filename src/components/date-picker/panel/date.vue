@@ -184,22 +184,26 @@
                 if (reset) this.isTime = false;
             },
             prevYear () {
-                if (this.currentView === 'year') {
+                var view=this.currentView;
+                if (view=== 'year') {
                     this.$refs.yearTable.prevTenYear();
                 } else {
                     this.year--;
                     this.date.setFullYear(this.year);
                     this.resetDate();
                 }
+                this.$emit('on-change-year',view);
             },
             nextYear () {
-                if (this.currentView === 'year') {
+               var view=this.currentView;
+                if (view=== 'year') {
                     this.$refs.yearTable.nextTenYear();
                 } else {
                     this.year++;
                     this.date.setFullYear(this.year);
                     this.resetDate();
                 }
+                 this.$emit('on-change-year',view);
             },
             prevMonth () {
                 this.month--;
@@ -233,15 +237,15 @@
             handleYearPick(year, close = true) {
                 this.year = year;
                 if (!close) return;
-
+                var preView= this.currentView;
                 this.date.setFullYear(year);
                 if (this.selectionMode === 'year') {
                     this.$emit('on-pick', new Date(year, 0, 1));
                 } else {
                     this.currentView = 'month';
                 }
-
                 this.resetDate();
+                this.$emit('on-change-year',preView);
             },
             handleMonthPick (month) {
                 this.month = month;

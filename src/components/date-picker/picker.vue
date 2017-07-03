@@ -406,7 +406,9 @@
                         this.picker.resetView && this.picker.resetView();
                         this.emitChange(date);
                     });
-
+                    this.picker.$on('on-change-year', () => {
+                        this.$emit('on-change-year');
+                    });
                     this.picker.$on('on-pick-clear', () => {
                         this.handleClear();
                     });

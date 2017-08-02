@@ -4,30 +4,23 @@
             <col v-for="(column, index) in columns" :width="setCellWidth(column, index, true)">
         </colgroup>
         <thead>
-            <tr v-for="row in rows">
-                <th
-                    v-for="column in row" :class="alignCls(column)"
-                    :rowspan="column.children.length > 0 ? 1 : rows.length - column.__depth"
-                    :colspan="column.__maxChildrenNum">
+            <tr>
+                <th v-for="(column, index) in columns" :class="alignCls(column)">
                     <div :class="cellClasses(column)">
                         <template v-if="column.type === 'expand'"></template>
                         <template v-else-if="column.type === 'selection'"><Checkbox :value="isSelectAll" @on-change="selectAll"></Checkbox></template>
                         <template v-else>
-<<<<<<< HEAD
-                            <span v-html="renderHeader(column, column._index)"></span>
-=======
                             <span v-if="!column.renderHeader" @click="handleSortByHead(index)">{{ column.title || '#' }}</span>
                             <render-header v-else :render="column.renderHeader" :column="column" :index="index"></render-header>
->>>>>>> 2.0
                             <span :class="[prefixCls + '-sort']" v-if="column.sortable">
-                                <i class="ivu-icon ivu-icon-arrow-up-b" :class="{on: column._sortType === 'asc'}" @click="handleSort(column._index, 'asc')"></i>
-                                <i class="ivu-icon ivu-icon-arrow-down-b" :class="{on: column._sortType === 'desc'}" @click="handleSort(column._index, 'desc')"></i>
+                                <i class="ivu-icon ivu-icon-arrow-up-b" :class="{on: column._sortType === 'asc'}" @click="handleSort(index, 'asc')"></i>
+                                <i class="ivu-icon ivu-icon-arrow-down-b" :class="{on: column._sortType === 'desc'}" @click="handleSort(index, 'desc')"></i>
                             </span>
                             <Poptip
                                 v-if="isPopperShow(column)"
                                 v-model="column._filterVisible"
                                 placement="bottom"
-                                @on-popper-hide="handleFilterHide(column._index)">
+                                @on-popper-hide="handleFilterHide(index)">
                                 <span :class="[prefixCls + '-filter']">
                                     <i class="ivu-icon ivu-icon-funnel" :class="{on: column._isFiltered}"></i>
                                 </span>
@@ -38,19 +31,19 @@
                                         </checkbox-group>
                                     </div>
                                     <div :class="[prefixCls + '-filter-footer']">
-                                        <i-button type="text" size="small" :disabled="!column._filterChecked.length" @click.native="handleFilter(column._index)">{{ t('i.table.confirmFilter') }}</i-button>
-                                        <i-button type="text" size="small" @click.native="handleReset(column._index)">{{ t('i.table.resetFilter') }}</i-button>
+                                        <i-button type="text" size="small" :disabled="!column._filterChecked.length" @click.native="handleFilter(index)">{{ t('i.table.confirmFilter') }}</i-button>
+                                        <i-button type="text" size="small" @click.native="handleReset(index)">{{ t('i.table.resetFilter') }}</i-button>
                                     </div>
                                 </div>
                                 <div slot="content" :class="[prefixCls + '-filter-list']" v-else>
                                     <ul :class="[prefixCls + '-filter-list-single']">
                                         <li
                                             :class="itemAllClasses(column)"
-                                            @click="handleReset(column._index)">{{ t('i.table.clearFilter') }}</li>
+                                            @click="handleReset(index)">{{ t('i.table.clearFilter') }}</li>
                                         <li
                                             :class="itemClasses(column, item)"
                                             v-for="item in column.filters"
-                                            @click="handleSelect(column._index, item.value)">{{ item.label }}</li>
+                                            @click="handleSelect(index, item.value)">{{ item.label }}</li>
                                     </ul>
                                 </div>
                             </Poptip>
@@ -75,7 +68,6 @@
         mixins: [ Mixin, Locale ],
         components: { CheckboxGroup, Checkbox, Poptip, iButton, renderHeader },
         props: {
-            headRows: Array,
             prefixCls: String,
             styleObject: Object,
             columns: Array,
@@ -88,9 +80,6 @@
             }
         },
         computed: {
-            rows () {
-                return this.headRows || [this.columns];
-            },
             styles () {
                 const style = Object.assign({}, this.styleObject);
                 const width = this.$parent.bodyHeight === 0 ? parseInt(this.styleObject.width) : parseInt(this.styleObject.width) + this.$parent.scrollBarWidth;

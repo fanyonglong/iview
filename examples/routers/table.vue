@@ -56,47 +56,6 @@
 //                        fixed: 'right',
                         width: 200
                     },
-<<<<<<< HEAD
-                    {
-                        title: '操作',
-                        key: 'name',
-                        render: (h, params) => {
-                            return h(test, {
-                                props: {
-                                    row: params.row
-                                }
-                            });
-                        }
-                    },
-                    {
-                        title: '测试',
-                        children: [
-                            {
-                                title: '测试2',
-                                children: [
-                                {
-                                    title: '测试4',
-                                    children: [
-                                    {title: '测试5'},
-                                    {
-                                        title: '测试6',
-                                        children: [
-                                        {title: '测试7'}
-                                        ]
-                                    }
-                                    ]
-                                },
-                                {
-                                    title: '测试3'
-                                }
-                                ]
-                            },
-                            {
-                                title: '测试3'
-                            }
-                        ]
-                    },
-=======
 //                    {
 //                        title: '市区',
 //                        key: 'city',
@@ -121,7 +80,6 @@
 //                            return h(test);
 //                        }
 //                    }
->>>>>>> 2.0
                 ],
                 data3: [
                     {
